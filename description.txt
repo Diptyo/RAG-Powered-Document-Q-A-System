@@ -1,0 +1,41 @@
+	RAG Variant= Custom retrievers(Query aware chunking), hybrid search, metadata filtering, multi-vector RAG
+
+	1. Here we are basically replace the "RecursiveCharacterTextSplitter" into "NLTKTextSplitter", 
+	it basically uses sentence boundaries and avoids cutting off in mid-sentence
+
+	The only change is in the "chunks.py", otherwise everything is same
+
+	so to chnage the library for chunking the response gets better from the level1
+
+	response(level_2)= Answer: Task Decomposition involves breaking down a complex task into smaller,
+	 more manageable sub-tasks. This approach simplifies the overall problem and makes it easier to develop a solution. 
+	 It is not explicitly defined in the provided context,
+	 but the context describes a step-by-step approach to coding, which is a form of task decomposition.
+
+	 response(level_1)= Task Decomposition involves breaking down a complex task into smaller, 
+                   more manageable subtasks. This approach simplifies the problem-solving process.
+                    It makes it easier to develop solutions for each subtask individually
+
+	Bonus= you can use both together as well
+	
+	from langchain_text_splitters import RecursiveCharacterTextSplitter, NLTKTextSplitter
+
+	# First pass: sentence-level split
+	sentence_splitter = NLTKTextSplitter(chunk_size=2000, chunk_overlap=0)
+	intermediate_chunks = sentence_splitter.split_documents(docs)
+
+	# Second pass: char-based split for finer control
+	char_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=100)
+	final_chunks = char_splitter.split_documents(intermediate_chunks)
+
+This gives clean boundaries + size control(use this in level )
+
+2. Now metadata filterig:
+This gives you:
+
+🔍 Targeted retrieval (e.g., only from "terms.pdf")
+
+🔐 Multi-user isolation (e.g., user-specific chunks)
+
+🧩 Structured filtering for advanced apps
+
